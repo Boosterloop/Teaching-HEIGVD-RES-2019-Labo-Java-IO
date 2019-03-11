@@ -127,26 +127,19 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    // throw new UnsupportedOperationException("The student has not implemented this method yet.");
-    try{
       String filePath = WORKSPACE_DIRECTORY;
       for (String tag : quote.getTags()) {
         filePath += "/" + tag;
       }
-
-      // Create file and path
+      filePath += "/";
       File file = new File(filePath);
-      file.getParentFile().mkdirs();
+      file.mkdirs();
 
       // Write quote in file
-      OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(filePath), "UTF8");
+      OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(filePath + filename), "UTF8");
       out.append(quote.getQuote());
       out.flush();
       out.close();
-    } catch (IOException e) {
-      System.out.println(e.getMessage());
-    }
-
   }
   
   /**
