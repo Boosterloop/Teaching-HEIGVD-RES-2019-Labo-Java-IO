@@ -36,6 +36,7 @@ public class Utils {
     }
 
     if(index == -1) {
+      result[0] = "";
       result[1] = lines;
     } else {
       result[1] = lines.substring(index + separatorSize);
