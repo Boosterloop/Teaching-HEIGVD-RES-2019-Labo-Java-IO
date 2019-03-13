@@ -17,6 +17,10 @@ import java.util.logging.Logger;
  */
 public class FileNumberingFilterWriter extends FilterWriter {
 
+  private int lineNumber = 1;
+  private boolean firstLine = true;
+  private boolean newLine = false;
+  private char lastChar;
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
   public FileNumberingFilterWriter(Writer out) {
@@ -25,17 +29,49 @@ public class FileNumberingFilterWriter extends FilterWriter {
 
   @Override
   public void write(String str, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+      for(int i = 0; i < len; i++){
+        if(i + off >= str.length()){
+          break;
+        }
+        /* Call to write(int c) */
+        write(str.charAt(i + off));
+      }
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    /* Call to write(String str, int off, int len) */
+    write(cbuf.toString(), off, len);
   }
 
   @Override
   public void write(int c) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
-  }
 
+    /* First char written needs a new line */
+    if(firstLine) {
+      out.write(lineNumber + "\t");
+      lineNumber++;
+      firstLine = false;
+    }
+    /* \n always means we need a new line */
+    if(c == '\n') {
+      newLine = true;
+    }
+    /* if we have \r but no \n we need a new line */
+    if(lastChar == '\r' && c != '\n') {
+      out.write(lineNumber + "\t");
+      lineNumber++;
+    }
+
+    /* Write char and save it */
+    out.write(c);
+    lastChar = (char)c;
+
+    /* Make a new line with number and \t */
+    if(newLine) {
+      out.write(lineNumber + "\t");
+      lineNumber++;
+      newLine = false;
+    }
+  }
 }
