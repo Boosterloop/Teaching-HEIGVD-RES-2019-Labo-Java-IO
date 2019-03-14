@@ -23,18 +23,21 @@ public class Utils {
     String[] separators = {"\r\n", "\n", "\r"};
     String[] result = new String[2];
 
-    int index = 0;
+    int index = 0; // index of first char of separator in lines
     int separatorSize = 0;
 
+    // For each separator
     for(int i = 0; i < separators.length; i++) {
+      // Search if it is in lines
       index = lines.indexOf(separators[i]);
-      if(index != -1) {
-        separatorSize = separators[i].length();
-        result[0] = lines.substring(0, index + separatorSize);
+      if(index != -1) { // If it is
+        separatorSize = separators[i].length(); // Save lenght of separator
+        result[0] = lines.substring(0, index + separatorSize); // Save first line
         break;
       }
     }
 
+    // If it does not have any line separator
     if(index == -1) {
       result[0] = "";
       result[1] = lines;

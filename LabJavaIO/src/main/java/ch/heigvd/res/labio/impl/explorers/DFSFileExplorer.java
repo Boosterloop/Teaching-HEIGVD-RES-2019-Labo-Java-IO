@@ -24,18 +24,22 @@ public class DFSFileExplorer implements IFileExplorer {
           return;
       }
 
+      // Do the visit
       vistor.visit(rootDirectory);
 
+      // if directory -> store the directory's content in a list
       if(rootDirectory.isDirectory()) {
           LinkedList<File> fileList = new LinkedList<>();
           for (File file : rootDirectory.listFiles()) {
             fileList.add(file);
           }
 
-          if(fileList.size() > 0) {
+          // if there is more than 1 element in list, sort
+          if(fileList.size() > 1) {
               Collections.sort(fileList);
           }
 
+          // Do the recursion for each file in list
           Iterator i = fileList.iterator();
           while (i.hasNext())
           {

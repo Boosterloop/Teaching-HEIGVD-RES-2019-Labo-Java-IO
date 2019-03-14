@@ -87,6 +87,7 @@ public class Application implements IApplication {
     for (int i = 0; i < numberOfQuotes; i++) {
       Quote quote = client.fetchQuote();
 
+      // Call storeQuote
       storeQuote(quote, "quote-" + quote.getValue().getId() + ".utf8");
 
       LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
@@ -122,19 +123,22 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-      String filePath = WORKSPACE_DIRECTORY;
-      for (String tag : quote.getTags()) {
-        filePath += "/" + tag;
-      }
-      filePath += "/";
-      File file = new File(filePath);
-      file.mkdirs();
 
-      // Write quote in file
-      OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(filePath + filename), "UTF8");
-      out.append(quote.getQuote());
-      out.flush();
-      out.close();
+    // Create file's path
+    String filePath = WORKSPACE_DIRECTORY;
+    for (String tag : quote.getTags()) {
+      filePath += "/" + tag;
+    }
+    filePath += "/";
+    File file = new File(filePath);
+    // Make directories of the path
+    file.mkdirs();
+
+    // Write quote in file
+    OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(filePath + filename), "UTF8");
+    out.append(quote.getQuote());
+    out.flush();
+    out.close();
   }
   
   /**
@@ -147,6 +151,7 @@ public class Application implements IApplication {
       @Override
       public void visit(File file) {
         try {
+          // Write file's path
           writer.write(file.getPath() + '\n');
           writer.flush();
         } catch (IOException e){

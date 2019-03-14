@@ -17,10 +17,10 @@ import java.util.logging.Logger;
  */
 public class FileNumberingFilterWriter extends FilterWriter {
 
-  private int lineNumber = 1;
-  private boolean firstLine = true;
-  private boolean newLine = false;
-  private char lastChar;
+  private int lineNumber = 1; // Line number for next line
+  private boolean firstLine = true; // First time we write in this writer
+  private boolean newLine = false; // We need to do a new line
+  private char lastChar; // last char written
   private static final Logger LOG = Logger.getLogger(FileNumberingFilterWriter.class.getName());
 
   public FileNumberingFilterWriter(Writer out) {
@@ -33,41 +33,41 @@ public class FileNumberingFilterWriter extends FilterWriter {
         if(i + off >= str.length()){
           break;
         }
-        /* Call to write(int c) */
+        // Call write(int c)
         write(str.charAt(i + off));
       }
   }
 
   @Override
   public void write(char[] cbuf, int off, int len) throws IOException {
-    /* Call to write(String str, int off, int len) */
+    // Call write(String str, int off, int len)
     write(cbuf.toString(), off, len);
   }
 
   @Override
   public void write(int c) throws IOException {
 
-    /* First char written needs a new line */
+    // First char written needs a new line
     if(firstLine) {
       out.write(lineNumber + "\t");
       lineNumber++;
       firstLine = false;
     }
-    /* \n always means we need a new line */
+    // \n always means we need a new line
     if(c == '\n') {
       newLine = true;
     }
-    /* if we have \r but no \n we need a new line */
+    // If we have \r but no \n we need a new line
     if(lastChar == '\r' && c != '\n') {
       out.write(lineNumber + "\t");
       lineNumber++;
     }
 
-    /* Write char and save it */
+    // Write char and save it
     out.write(c);
     lastChar = (char)c;
 
-    /* Make a new line with number and \t */
+    // Make a new line with number and \t
     if(newLine) {
       out.write(lineNumber + "\t");
       lineNumber++;

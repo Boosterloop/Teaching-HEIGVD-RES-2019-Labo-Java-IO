@@ -53,12 +53,12 @@ public abstract class FileTransformer implements IFileVisitor {
       Writer writer = new OutputStreamWriter(new FileOutputStream(file.getPath()+ ".out"), "UTF-8"); // the bug fix by teacher
       writer = decorateWithFilters(writer);
 
-      /* Char read */
+      // Char read
       int c = reader.read();
 
-      /* While not at the end of the stream */
+      // While not at the end of the stream
       while(c != -1) {
-        /*  Write character and read the next one */
+        //  Write character and read the next one
         writer.write(c);
         c = reader.read();
       }
